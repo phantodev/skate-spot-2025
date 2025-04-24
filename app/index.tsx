@@ -1,8 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { Pressable, Text, TextInput, View } from "react-native";
-import { styles } from "./assets/css/global";
+import { styles } from "../assets/css/global";
+import { useNavigation, useRouter } from "expo-router";
 
-export default function App() {
+export default function LoginScreen() {
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <Text style={styles.titleLg}>SKATE SPOT CWB</Text>
@@ -26,7 +28,7 @@ export default function App() {
         </Pressable>
         <Pressable
           style={styles.buttonGhost}
-          onPress={() => console.log("DUDU")}
+          onPress={() => router.push("/signup")}
           accessibilityLabel="Faça seu login apertando aqui!"
         >
           <Text style={styles.label}>Quero me cadastrar</Text>
