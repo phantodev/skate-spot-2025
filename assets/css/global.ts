@@ -12,7 +12,12 @@ export const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
   },
-
+  description: {
+    color: "#ffffff",
+    fontSize: 16,
+    textAlign: "center",
+    paddingHorizontal: 40,
+  },
   titleLg: {
     color: "#ffffff",
     fontSize: 30,
@@ -42,6 +47,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#841584",
     marginTop: 10,
+    paddingHorizontal: 20,
   },
   buttonGhost: {
     height: 40,
@@ -49,5 +55,20 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
+  },
+  errorInputMessage: {
+    fontSize: 12,
+    color: "#FFDE59",
+  },
+  errorInputBorder: {
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: "#FFDE59",
+  },
+  containerLottie: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
