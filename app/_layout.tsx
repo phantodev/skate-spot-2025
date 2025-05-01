@@ -18,14 +18,15 @@ export default function RootLayout() {
           contentStyle: { width },
           gestureEnabled: true,
           presentation: "card",
+          headerShown: false,
         }}
       >
         <Stack.Screen
           name="index"
           options={{
             headerShown: false,
-            // Opções específicas para a tela index
-            animation: "slide_from_left", // Animação diferente para a tela index
+            // Desativando a animação para a tela de login
+            animation: "none", // Sem animação para evitar transição ao fazer logout
           }}
         />
         <Stack.Screen
@@ -42,13 +43,6 @@ export default function RootLayout() {
             headerShown: false,
             // Opções específicas para a tela signup
             animation: "slide_from_right", // Animação diferente para a tela signup
-          }}
-        />
-        <Stack.Screen
-          name="(auth)"
-          options={{
-            headerShown: false,
-            animation: "fade",
           }}
         />
       </Stack>

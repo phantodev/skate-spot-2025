@@ -25,6 +25,16 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": ["expo-router"]
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permite $(PRODUCT_NAME) acessar a sua camera",
+          "microphonePermission": "Permite $(PRODUCT_NAME) acessar seu microphone",
+          "recordAudioAndroid": true
+        }
+      ]
+    ]
   }
 }

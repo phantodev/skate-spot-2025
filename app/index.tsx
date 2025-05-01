@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { styles } from "../assets/css/global";
-import { useNavigation, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useNavigation, useRouter } from "expo-router";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { supabase } from "../configs/supabase";
 import Toast from "react-native-toast-message";
 import { useAuthStore } from "../zustand/useAuthStore";
@@ -13,7 +13,47 @@ export default function LoginScreen() {
 	const [password, setPassword] = useState<string>("");
 	const [emailEmpty, setEmailEmpty] = useState<boolean>(false);
 	const [passwordEmpty, setPasswordEmpty] = useState<boolean>(false);
-	const { setAuth, user, session } = useAuthStore();
+	const { setAuth, clearAuth, user, session, isLoggedIn } = useAuthStore();
+	const [isLoading, setIsLoading] = useState(true);
+
+	// Verificar se já existe uma sessão ativa no Supabase
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		const checkSession = async () => {
+			try {
+				// Obter a sessão atual do Supabase
+				const { data } = await supabase.auth.getSession();
+
+				// Se existir uma sessão, atualizar o estado de autenticação e redirecionar
+				if (data?.session) {
+					setAuth(data.session.user, data.session);
+					router.replace("/auth");
+				}
+			} catch (error) {
+				console.error("Erro ao verificar sessão:", error);
+				clearAuth();
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		// Configurar o listener para mudanças no estado de autenticação
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(event, session) => {
+				if (event === "SIGNED_IN" && session) {
+					setAuth(session.user, session);
+					router.replace("/auth");
+				}
+			},
+		);
+
+		checkSession();
+
+		// Limpar o listener quando o componente for desmontado
+		return () => {
+			authListener?.subscription.unsubscribe();
+		};
+	}, []);
 
 	async function handleLogin() {
 		if (email === "") {
@@ -60,14 +100,6 @@ export default function LoginScreen() {
 			setPasswordEmpty(false);
 		}
 	}, [email, password]);
-
-	useEffect(() => {
-		console.log("Usuário:", user);
-		console.log("Sessão:", session);
-		if (user && session) {
-			router.push("/(auth)");
-		}
-	}, [user, session]);
 
 	return (
 		<View style={styles.container}>

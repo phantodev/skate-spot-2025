@@ -1,7 +1,21 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
+import { supabase } from "../../configs/supabase";
+import { Alert } from "react-native";
+import { useAuthStore } from "../../zustand/useAuthStore";
 
 export default function TabLayout() {
+  const router = useRouter();
+  const { clearAuth } = useAuthStore();
+  // Configurar o listener para mudanças no estado de autenticação
+  const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
+    if (event === "SIGNED_OUT") {
+      clearAuth();
+      // Usar router.replace sem parâmetros adicionais
+      // Vamos modificar o _layout.tsx principal para controlar a animação
+      router.replace("/");
+    }
+  });
   return (
     <Tabs
       screenOptions={{
