@@ -24,8 +24,13 @@ import { useEffect, useRef, useState } from "react";
 import { type CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import Toast from "react-native-toast-message";
 import { supabase } from "../configs/supabase";
+import { useTempSpotStore } from "../zustand/useTempSpot";
 
-export default function CardSkateSpot({ spot }: { spot: TSkateSpot }) {
+export default function CardSkateSpot({
+	spot,
+	onDelete,
+}: { spot: TSkateSpot; onDelete: (id: string) => void }) {
+	const { setTempSpot, tempSpot } = useTempSpotStore();
 	const [modalVisible, setModalVisible] = useState(false);
 	const [modalCameraVisible, setModalCameraVisible] = useState(false);
 	const [facing, setFacing] = useState<CameraType>("back");
@@ -166,12 +171,32 @@ export default function CardSkateSpot({ spot }: { spot: TSkateSpot }) {
 	async function handleGetPhoto() {
 		setModalCameraVisible(false);
 	}
+
 	return (
 		<View
 			id="skate-spot-card"
-			className="w-full rounded-md bg-zinc-800 p-6 mt-4"
+			className="relative w-full rounded-md bg-zinc-800 p-6 mt-4"
 		>
-			<Text className="text-white text-xl font-semibold">{spot.name}</Text>
+			<TouchableHighlight
+				onPress={() => {
+					console.log('Setting tempSpot:', spot);
+					setTempSpot(spot);
+					// Verify the state was updated by logging it after a small delay
+					setTimeout(() => {
+						console.log('Current tempSpot after update:', useTempSpotStore.getState().tempSpot);
+					}, 100);
+				}}
+				style={{ position: "absolute", top: 10, right: 50 }}
+			>
+				<Feather name="edit" size={20} color="white" />
+			</TouchableHighlight>
+			<TouchableHighlight
+				onPress={() => onDelete(spot.id)}
+				style={{ position: "absolute", top: 10, right: 10 }}
+			>
+				<Feather name="trash-2" size={20} color="white" />
+			</TouchableHighlight>
+			<Text className="text-white text-xl font-semibold mt-4">{spot.name}</Text>
 			<Text className="text-white">
 				{spot.address} - {spot.district}
 			</Text>
