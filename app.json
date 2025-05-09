@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "skate-spot-2025",
-    "slug": "skate-spot-2025",
+    "slug": "app-skate-maio-2025",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#7100C8"
     },
     "ios": {
       "supportsTablet": true
@@ -19,7 +19,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "br.com.phantodev.appskate"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -35,6 +40,15 @@
           "recordAudioAndroid": true
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1f676482-4e48-4e19-97ec-0211e8573e2f"
+      }
+    },
+    "owner": "kduburko"
   }
 }
